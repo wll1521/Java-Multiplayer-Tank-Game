@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        // Create the main frame or 'window'
+        // Create the main frame
         JFrame frame = new JFrame("Tank Game");
         frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,7 +26,7 @@ public class Main {
 
         boolean isHost = (choice == JOptionPane.YES_OPTION);
 
-        // Initialize the NetworkManager
+        // Initialize NetworkManager
         NetworkManager networkManager = new NetworkManager();
 
         if (isHost) {
@@ -58,7 +58,7 @@ public class Main {
         frame.add(gamePanel, BorderLayout.CENTER);
         frame.add(chatPanel, BorderLayout.EAST);
 
-        // Pass the NetworkManager to the panels
+        // Pass NetworkManager to the panels
         gamePanel.setNetworkManager(networkManager);
         chatPanel.setNetworkManager(networkManager);
 

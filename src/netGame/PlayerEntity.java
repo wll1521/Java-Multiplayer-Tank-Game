@@ -6,9 +6,9 @@ import java.util.HashSet;
 import javax.imageio.ImageIO;
 
 public class PlayerEntity extends Entity {
-    public int id; // ID will be set externally
+    public int id;
     public HashSet<Integer> heldKeys = new HashSet<>();
-    public float[] movementVec; // Specifically used to track forces applied to player from inputs
+    public float[] movementVec; // Used to track forces applied to player from inputs
     public boolean isDestroyed = false;
     private BufferedImage sprite;
     private String initialSpritePath;
