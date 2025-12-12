@@ -18,6 +18,8 @@ public class GamePanel extends JPanel {
 
     private NetworkManager networkManager;
     private boolean isHost;
+    private long lastBullet = 0;
+    private long bulletCooldown = 500;
 
     public GamePanel(boolean isHost) {
         super();
@@ -35,7 +37,7 @@ public class GamePanel extends JPanel {
         player.y = 100;
 
         // Initialize opponent player (will be updated upon receiving data)
-        opponentPlayer = new PlayerEntity("./data/greentank.png");
+        opponentPlayer = new PlayerEntity("./data/redtank.png");
         opponentPlayer.id = isHost ? 2 : 1; // Assign fixed IDs
         ctx.opponentPlayer = opponentPlayer;
         ctx.tanks.add(opponentPlayer);
@@ -196,23 +198,27 @@ public class GamePanel extends JPanel {
                     player.movementVec[1] = (float) -Math.cos(angleRad) * speed;
                 }
                 if (key == KeyEvent.VK_SPACE) {
-                    // Spawn a bullet
-                    BulletEntity bullet = new BulletEntity();
-                    bullet.x = player.x;
-                    bullet.y = player.y;
-                    bullet.angle = player.angle;
-                    var bulletSpeed = 10;
-                    bullet.physVecs.add(new float[]{
-                            (float) Math.sin(Math.toRadians(bullet.angle)) * bulletSpeed,
-                            (float) -Math.cos(Math.toRadians(bullet.angle)) * bulletSpeed
-                    });
-                    ctx.bullets.add(bullet);
+                    if(System.currentTimeMillis() > (lastBullet+bulletCooldown)) {
+                        // Spawn a bullet
+                        BulletEntity bullet = new BulletEntity();
+                        bullet.x = player.x;
+                        bullet.y = player.y;
+                        bullet.angle = player.angle;
+                        var bulletSpeed = 10;
+                        bullet.physVecs.add(new float[]{
+                                (float) Math.sin(Math.toRadians(bullet.angle)) * bulletSpeed,
+                                (float) -Math.cos(Math.toRadians(bullet.angle)) * bulletSpeed
+                        });
+                        ctx.bullets.add(bullet);
 
-                    // Send bullet fired message
-                    if (networkManager != null) {
-                        BulletFiredMessage bulletMsg = new BulletFiredMessage(bullet.x, bullet.y, bullet.angle);
-                        networkManager.sendMessage(bulletMsg);
+                        // Send bullet fired message
+                        if (networkManager != null) {
+                            BulletFiredMessage bulletMsg = new BulletFiredMessage(bullet.x, bullet.y, bullet.angle);
+                            networkManager.sendMessage(bulletMsg);
 
+                        }
+
+                        lastBullet = System.currentTimeMillis();
                     }
                 }
             }
