@@ -5,7 +5,6 @@ A Real-Time Multiplayer Java Tank Game
 Authors:
 William Locklier
 Parker Cole
-University of South Alabama
 
 
 OVERVIEW
@@ -66,5 +65,6 @@ Controls:
 - Arrow Keys: Move tank
 - Spacebar: Fire
 - Chat Panel: Click text box, type message, press Enter. Focus goes back to GamePanel after.
+
 
 
